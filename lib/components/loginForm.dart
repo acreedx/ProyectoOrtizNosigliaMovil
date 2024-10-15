@@ -56,7 +56,9 @@ class _LoginFormState extends State<LoginForm> {
                         : const Icon(
                             Icons.visibility_outlined,
                             color: Colors.blue,
-                          ))),
+                          )
+                        )
+                      ),
           ),
           const SizedBox(height: 16.0), // Espaciado entre el campo y el botón
           ElevatedButton(

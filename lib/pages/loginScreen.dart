@@ -1,75 +1,135 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_ortiz_nosiglia_movil/components/loginForm.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/components/Auth_text_field.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/components/Password_text_field.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/pages/appointmentScreen.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/pages/menuScreen.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final String _username = '';
-  final String _password = '';
-
-  void _login() {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      // Aquí podrías añadir la lógica para autenticar al usuario
-      print('Usuario: $_username');
-      print('Contraseña: $_password');
-      // Simulación de redirección después del login exitoso
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Iniciando sesión...')),
-      );
-    }
-  }
-  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 15,
-            vertical: 15,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          "Bienvenido al centro Ortiz Nosiglia",
+          style: GoogleFonts.inter(
+              color: Colors.black87,
+              fontSize: 22.sp,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0),
+        ),
+        toolbarHeight: 110,
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30),
+        child: Column(children: [
+          const Spacer(),
+          const Auth_text_field(
+              text: "Ingrese tu Usuario", icon: Icon(Icons.person)),
+          const SizedBox(
+            height: 5,
           ),
-          child: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const Spacer(),
-                const Text(
-                  'Bienvenido al centro Ortiz Nosiglia', // Texto por defecto en lugar de AppText
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.deepOrangeAccent
+          //Text field Password
+          const PasswordTextField(
+              text: "Ingresa tu Contraseña",
+              icon: Icon(
+                Icons.lock,
+              )),
+          Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    PageTransition(
+                        type: PageTransitionType.bottomToTop,
+                        child: const Placeholder()));
+              },
+              child: Text(
+                "Olvidaste tu Contraseña?",
+                style: GoogleFonts.poppins(
+                    fontSize: 15.sp,
+                    color: Colors.orange,
+                    fontWeight: FontWeight.w500),
+              ),
+            )
+          ]),
+          const SizedBox(
+            height: 10,
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.05,
+            width: MediaQuery.of(context).size.width * 0.9,
+            child: ElevatedButton(
+              onPressed: () {
+                // Perform verification or other actions here
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.orange,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.fade,
+                          child: const MenuScreen()));
+                },
+                child: Text(
+                  "Iniciar Sesión",
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.poppins(
+                    fontSize: 18.sp,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 0,
                   ),
                 ),
-                const SizedBox(height: 10), // Config.spaceSmall eliminado
-                const Text(
-                  'Iniciar Sesión', // Texto por defecto en lugar de AppText
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 10), // Espacio por defecto
-                // LoginForm o SignUpForm se reemplaza por un Container
-                Container(
-                  color: Colors.grey.shade200,
-                  width: double.infinity,
-                  child: const LoginForm(),
-                ),
-                const SizedBox(height: 10), 
-                const Spacer(),
-              ],
+              ),
             ),
           ),
-        ),
+          const SizedBox(
+            height: 30,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "No tienes una cuenta? ",
+                style:
+                    GoogleFonts.poppins(fontSize: 15.sp, color: Colors.black87),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.rightToLeft,
+                          child: const Placeholder()));
+                },
+                child: Text(
+                  "Crear cuenta",
+                  style: GoogleFonts.poppins(
+                    fontSize: 15.sp,
+                    color: Colors.orange,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const Spacer(),
+        ]),
       ),
     );
   }
