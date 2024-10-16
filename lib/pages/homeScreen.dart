@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/components/dentistCard.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -40,23 +40,6 @@ class HomeScreen extends StatelessWidget {
                     color: const Color.fromARGB(255, 46, 46, 46),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    // Redirige a la pantalla de todos los dentistas
-                    Navigator.pushReplacement(
-                      context,
-                      PageTransition(
-                        type: PageTransitionType.rightToLeft,
-                        child: const Placeholder(),
-                      ),
-                    );
-                  },
-                  child: Text(
-                    "Ver todos",
-                    style:
-                        GoogleFonts.inter(fontSize: 16, color: Colors.orange),
-                  ),
-                ),
               ],
             ),
           ),
@@ -64,15 +47,30 @@ class HomeScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: SizedBox(
-              height: 180,
+              height: 250,
               width: 400,
               child: ListView(
                 physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 children: const [
-                  Placeholder(),
-                  Placeholder(),
-                  Placeholder(),
+                  DentistCard(
+                    name: "Dr. Juan Pérez",
+                    specialty: "Ortodoncia",
+                    imageUrl:
+                        "https://odontologiaespecializadasevilla.com/wp-content/uploads/2018/07/dentista-sevilla.jpg",
+                  ),
+                  DentistCard(
+                    name: "Dra. Ana Martínez",
+                    specialty: "Endodoncia",
+                    imageUrl:
+                        "https://odontologiaespecializadasevilla.com/wp-content/uploads/2018/07/dentista-sevilla.jpg",
+                  ),
+                  DentistCard(
+                    name: "Dra. Ana Martínez",
+                    specialty: "Cirugía dental",
+                    imageUrl:
+                        "https://odontologiaespecializadasevilla.com/wp-content/uploads/2018/07/dentista-sevilla.jpg",
+                  ),
                 ],
               ),
             ),

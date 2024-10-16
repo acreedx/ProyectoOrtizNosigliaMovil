@@ -1,10 +1,11 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/models/appointment.dart';
-import 'package:proyecto_ortiz_nosiglia_movil/pages/appointmentDetail.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/models/person.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/pages/appointmentScreen.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/pages/homeScreen.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/pages/loginScreen.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/pages/profileScreen.dart';
 
 final List<Appointment> appointments = [
   Appointment(
@@ -49,6 +50,7 @@ final List<Appointment> appointments = [
   ),
 ];
 
+
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
   @override
@@ -63,12 +65,14 @@ class _MenuScreenState extends State<MenuScreen> {
     Icons.medical_information,
     Icons.person,
   ];
+  
   List<Widget> pages = [
     const HomeScreen(),
     const AppointmentScreen(),
     const LoginScreen(),
-    const LoginScreen()
+    const ProfileScreen()
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

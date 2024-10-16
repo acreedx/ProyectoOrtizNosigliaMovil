@@ -1,13 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/components/appointmentListView.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/components/profileList.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/models/patient.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/models/person.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/pages/loginScreen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class ProfileDetailsScreen extends StatelessWidget {
-  final Person person;
-  const ProfileDetailsScreen({super.key, required this.person});
+final Person person = Person(
+  id: "12345",
+  firstName: "Juan",
+  secondName: "Carlos",
+  familyName: "Pérez",
+  gender: "Male",
+  birthDate: DateTime(1990, 5, 20),
+  phone: "123456789",
+  mobile: "987654321",
+  email: "juan.perez@example.com",
+  addressLine: "Calle Falsa 123",
+  addressCity: "La Paz",
+  maritalStatus: "Single",
+  identification: "CI123456",
+  photoUrl: "https://example.com/photo.jpg",
+  allergies: [],
+);
+
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,22 +66,6 @@ class ProfileDetailsScreen extends StatelessWidget {
                             ),
                     ),
                   ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      height: 30,
-                      width: 30,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(width: 1, color: Colors.white),
-                        color: Colors.white,
-                        image: const DecorationImage(
-                          image: AssetImage("lib/icons/camra.png"),
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -80,23 +84,24 @@ class ProfileDetailsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildInfoRow("Género:", person.gender),
+                  _buildInfoRow("Género:",
+                      person.gender == "Male" ? "Masculino" : "Femenino"),
                   _buildInfoRow("Fecha de nacimiento:",
                       "${person.birthDate.toLocal()}".split(' ')[0]),
                   _buildInfoRow("Teléfono:", person.phone ?? "No disponible"),
-                  _buildInfoRow("Móvil:", person.mobile ?? "No disponible"),
+                  _buildInfoRow("Celular:", person.mobile ?? "No disponible"),
                   _buildInfoRow("Email:", person.email),
                   _buildInfoRow("Dirección:",
                       "${person.addressLine}, ${person.addressCity}"),
-                  _buildInfoRow("Estado Civil:", person.maritalStatus),
-                  _buildInfoRow("Identificación:", person.identification),
-                  _buildAllergiesSection(person.allergies),
+                  _buildInfoRow("Estado Civil:",
+                      person.maritalStatus == "Married" ? "Casado" : "Soltero"),
+                  _buildInfoRow("CI:", person.identification),
                 ],
               ),
             ),
             const SizedBox(height: 50),
             Container(
-              height: 550,
+              height: 100,
               width: double.infinity,
               decoration: const BoxDecoration(
                 color: Colors.white,
@@ -107,46 +112,10 @@ class ProfileDetailsScreen extends StatelessWidget {
               ),
               child: const Column(
                 children: [
-                  SizedBox(height: 50),
-                  ProfileList(
-                    image: "lib/icons/heart2.png",
-                    title: "My Saved",
-                    color: Colors.black87,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                    child: Divider(),
-                  ),
-                  ProfileList(
-                    image: "lib/icons/appoint.png",
-                    title: "Appointment",
-                    color: Colors.black87,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                    child: Divider(),
-                  ),
-                  ProfileList(
-                    image: "lib/icons/chat.png",
-                    title: "FAQs",
-                    color: Colors.black87,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                    child: Divider(),
-                  ),
-                  ProfileList(
-                    image: "lib/icons/pay.png",
-                    title: "Payment Method",
-                    color: Colors.black87,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                    child: Divider(),
-                  ),
+                  SizedBox(height: 30),
                   ProfileList(
                     image: "lib/icons/logout.png",
-                    title: "Log out",
+                    title: "Cerrar Sesión",
                     color: Colors.red,
                   ),
                 ],
@@ -169,32 +138,6 @@ class ProfileDetailsScreen extends StatelessWidget {
           color: Colors.white,
         ),
       ),
-    );
-  }
-
-  Widget _buildAllergiesSection(List<Allergy> allergies) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 10),
-        Text(
-          "Alergias:",
-          style: GoogleFonts.poppins(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
-        ),
-        const SizedBox(height: 5),
-        ...allergies.map((allergy) => Text(
-              allergy.substance, // Asegúrate de que tu clase Allergy tenga un atributo "name"
-              style: GoogleFonts.poppins(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-                color: Colors.white,
-              ),
-            )),
-      ],
     );
   }
 }

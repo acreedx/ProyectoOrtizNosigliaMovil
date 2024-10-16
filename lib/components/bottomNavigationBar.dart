@@ -1,6 +1,5 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:proyecto_ortiz_nosiglia_movil/models/appointment.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/pages/appointmentScreen.dart';
 
 class BottomsServiceNavigationBar extends StatefulWidget {

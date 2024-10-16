@@ -44,26 +44,13 @@ class _AppointmentScreenState extends State<AppointmentScreen>
         ),
         centerTitle: false,
         elevation: 0,
-        toolbarHeight: 80,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Container(
-              height: 20,
-              width: 20,
-              decoration: const BoxDecoration(
-                  image: DecorationImage(
-                image: AssetImage("lib/icons/bell.png"),
-              )),
-            ),
-          ),
-        ],
+        toolbarHeight: 60,
         backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 00),
+          padding: const EdgeInsets.symmetric(horizontal: 0),
           child: Column(
             children: [
               SizedBox(
@@ -84,7 +71,7 @@ class _AppointmentScreenState extends State<AppointmentScreen>
                         child: Column(
                           children: [
                             Padding(
-                              padding: EdgeInsets.symmetric(vertical: 4),
+                              padding: const EdgeInsets.symmetric(vertical: 4),
                               child: TabBar(
                                 indicator: BoxDecoration(
                                   color: Colors.orange,
@@ -100,21 +87,21 @@ class _AppointmentScreenState extends State<AppointmentScreen>
                                 tabs: const [
                                   Padding(
                                     padding:
-                                        EdgeInsets.symmetric(horizontal: 8.0),
+                                        EdgeInsets.symmetric(horizontal: 2.0),
                                     child: Tab(
                                       text: "Pendientes",
                                     ),
                                   ),
                                   Padding(
                                     padding:
-                                        EdgeInsets.symmetric(horizontal: 8.0),
+                                        EdgeInsets.symmetric(horizontal: 2.0),
                                     child: Tab(
                                       text: "Completadas",
                                     ),
                                   ),
                                   Padding(
                                     padding:
-                                        EdgeInsets.symmetric(horizontal: 8.0),
+                                        EdgeInsets.symmetric(horizontal: 2.0),
                                     child: Tab(
                                       text: "Canceladas",
                                     ),

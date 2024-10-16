@@ -23,7 +23,7 @@ class appointmentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.22,
+        height: MediaQuery.of(context).size.height * 0.24,
         width: MediaQuery.of(context).size.width * 0.9,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -127,7 +127,7 @@ class appointmentCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     fixedSize: Size(
-                      MediaQuery.of(context).size.width * 0.38,
+                      MediaQuery.of(context).size.width * 0.30,
                       MediaQuery.of(context).size.height * 0.040,
                     ),
                   ),
@@ -135,7 +135,7 @@ class appointmentCard extends StatelessWidget {
                   child: Text(
                     "Cancel",
                     style: GoogleFonts.poppins(
-                      fontSize: 15.sp,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
                       color: const Color.fromARGB(255, 61, 61, 61),
                     ),
@@ -148,15 +148,15 @@ class appointmentCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     fixedSize: Size(
-                      MediaQuery.of(context).size.width * 0.38,
+                      MediaQuery.of(context).size.width * 0.30,
                       MediaQuery.of(context).size.height * 0.040,
                     ),
                   ),
                   onPressed: () {},
                   child: Text(
-                    "Reschedule",
+                    "Completar",
                     style: GoogleFonts.poppins(
-                      fontSize: 15.sp,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
                       color: const Color.fromARGB(255, 252, 252, 252),
                     ),

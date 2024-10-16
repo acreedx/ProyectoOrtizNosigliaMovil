@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/components/Auth_text_field.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/components/Password_text_field.dart';
-import 'package:proyecto_ortiz_nosiglia_movil/pages/appointmentScreen.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/pages/menuScreen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -16,13 +15,20 @@ class LoginScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
-          "Bienvenido al centro Ortiz Nosiglia",
-          style: GoogleFonts.inter(
+        title: Flexible(
+          child: Text(
+            "Bienvenido al centro Ortiz Nosiglia",
+            style: GoogleFonts.inter(
               color: Colors.black87,
               fontSize: 22.sp,
               fontWeight: FontWeight.w700,
-              letterSpacing: 0),
+              letterSpacing: 0,
+            ),
+            textAlign: TextAlign.center,
+            maxLines: 3, // Ajusta el número máximo de líneas
+            overflow:
+                TextOverflow.ellipsis, // Maneja el desbordamiento del texto
+          ),
         ),
         toolbarHeight: 110,
         backgroundColor: Colors.white,
@@ -43,24 +49,6 @@ class LoginScreen extends StatelessWidget {
               icon: Icon(
                 Icons.lock,
               )),
-          Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    PageTransition(
-                        type: PageTransitionType.bottomToTop,
-                        child: const Placeholder()));
-              },
-              child: Text(
-                "Olvidaste tu Contraseña?",
-                style: GoogleFonts.poppins(
-                    fontSize: 15.sp,
-                    color: Colors.orange,
-                    fontWeight: FontWeight.w500),
-              ),
-            )
-          ]),
           const SizedBox(
             height: 10,
           ),
