@@ -1,14 +1,10 @@
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:proyecto_ortiz_nosiglia_movil/components/appointmentListView.dart';
-import 'package:proyecto_ortiz_nosiglia_movil/models/appointment.dart';
-import 'package:proyecto_ortiz_nosiglia_movil/pages/appointmentDetail.dart';
-import 'package:proyecto_ortiz_nosiglia_movil/components/bottomNavigationBar.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/pages/appointmentCreate.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/pages/appointmentTabCanceled.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/pages/appointmentTabCompleted.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/pages/appointmentTabUpcoming.dart';
-import 'package:proyecto_ortiz_nosiglia_movil/pages/menuScreen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class AppointmentScreen extends StatefulWidget {
@@ -38,15 +34,32 @@ class _AppointmentScreenState extends State<AppointmentScreen>
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
-          "Listado de citas",
-          style: GoogleFonts.poppins(color: Colors.black, fontSize: 18.sp),
-        ),
-        centerTitle: false,
-        elevation: 0,
-        toolbarHeight: 60,
-        backgroundColor: Colors.white,
-      ),
+          title: Text(
+            "Listado de citas",
+            style: GoogleFonts.poppins(color: Colors.black, fontSize: 18.sp),
+          ),
+          centerTitle: false,
+          elevation: 0,
+          toolbarHeight: 60,
+          backgroundColor: Colors.white,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.create_new_folder_outlined,
+                  color: Colors.orange),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  PageTransition(
+                    type: PageTransitionType.rightToLeft,
+                    child: const AppointmentCreateScreen(),
+                    inheritTheme: true,
+                    ctx: context,
+                    duration: const Duration(),
+                  ),
+                );
+              },
+            ),
+          ]),
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
         child: Padding(

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:page_transition/page_transition.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/components/appointmentCard.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/components/dentistCard.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/models/appointmentTestList.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -16,7 +17,7 @@ class HomeScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Text(
-              "Bienvenido al Centro Odontológico Ortiz Nosiglia",
+              "Inicio",
               style: GoogleFonts.inter(
                 fontSize: 22,
                 fontWeight: FontWeight.w700,
@@ -79,7 +80,7 @@ class HomeScreen extends StatelessWidget {
           // Sección de artículos de salud dental
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Row(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
@@ -90,30 +91,16 @@ class HomeScreen extends StatelessWidget {
                     color: const Color.fromARGB(255, 46, 46, 46),
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      PageTransition(
-                        type: PageTransitionType.rightToLeft,
-                        child: const Placeholder(),
-                      ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(8), // Bordes redondeados
-                    ),
-                  ),
-                  child: Text(
-                    "Ver Cita",
-                    style: GoogleFonts.inter(
-                      fontSize: 16,
-                      color: Colors.white, // Color del texto
-                    ),
-                  ),
+                const SizedBox(height: 20),
+                appointmentCard(
+                  confirmation: appointments[0].status,
+                  mainText: "Paciente ${appointments[0].subject}",
+                  subText: appointments[0].specialty,
+                  date:
+                      "${appointments[0].start.day}/${appointments[0].start.month}/${appointments[0].start.year}",
+                  time:
+                      "${appointments[0].start.hour}:${appointments[0].start.minute}",
+                  image: "lib/icons/male-doctor.png",
                 ),
               ],
             ),

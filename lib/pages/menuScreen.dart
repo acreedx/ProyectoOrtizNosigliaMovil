@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/models/appointment.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/models/person.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/pages/appointmentScreen.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/pages/appointmentsHistory.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/pages/homeScreen.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/pages/loginScreen.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/pages/profileScreen.dart';
@@ -25,8 +26,6 @@ final List<Appointment> appointments = [
     note: 'No issues found',
     patientInstruction: 'Arrive 15 minutes early',
     subject: 'Patient 1',
-    createdAt: DateTime.now().subtract(const Duration(days: 1)),
-    updatedAt: DateTime.now(),
   ),
   Appointment(
     id: '2',
@@ -45,11 +44,8 @@ final List<Appointment> appointments = [
     note: 'Patient did not show up',
     patientInstruction: 'Reschedule appointment',
     subject: 'Patient 2',
-    createdAt: DateTime.now().subtract(const Duration(days: 2)),
-    updatedAt: DateTime.now(),
   ),
 ];
-
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -65,11 +61,11 @@ class _MenuScreenState extends State<MenuScreen> {
     Icons.medical_information,
     Icons.person,
   ];
-  
+
   List<Widget> pages = [
     const HomeScreen(),
     const AppointmentScreen(),
-    const LoginScreen(),
+    const Appointmentshistory(),
     const ProfileScreen()
   ];
 

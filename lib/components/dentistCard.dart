@@ -62,7 +62,6 @@ class DentistCard extends StatelessWidget {
                         color: Colors.grey,
                       ),
                     ),
-                    const SizedBox(height: 8),
                   ],
                 ),
               ),

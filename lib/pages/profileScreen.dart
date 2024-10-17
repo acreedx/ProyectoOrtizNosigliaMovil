@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/components/appointmentListView.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/components/profileList.dart';
-import 'package:proyecto_ortiz_nosiglia_movil/models/patient.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/models/allergy.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/models/person.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/pages/loginScreen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -22,7 +22,8 @@ final Person person = Person(
   addressCity: "La Paz",
   maritalStatus: "Single",
   identification: "CI123456",
-  photoUrl: "https://example.com/photo.jpg",
+  photoUrl:
+      "https://plus.unsplash.com/premium_photo-1689977968861-9c91dbb16049?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Zm90byUyMGRlJTIwcGVyZmlsfGVufDB8fDB8fHww",
   allergies: [],
 );
 
@@ -32,7 +33,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 3, 226, 215),
+      backgroundColor: Colors.orange,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -56,8 +57,7 @@ class ProfileScreen extends StatelessWidget {
                       shape: BoxShape.circle,
                       image: person.photoUrl.isNotEmpty
                           ? DecorationImage(
-                              image: NetworkImage(person
-                                  .photoUrl), // Muestra la foto de la persona
+                              image: NetworkImage(person.photoUrl),
                               fit: BoxFit.cover,
                             )
                           : const DecorationImage(
@@ -80,7 +80,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
+              padding: const EdgeInsets.symmetric(horizontal: 5),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -110,14 +110,57 @@ class ProfileScreen extends StatelessWidget {
                   topRight: Radius.circular(30),
                 ),
               ),
-              child: const Column(
+              child: Column(
                 children: [
-                  SizedBox(height: 30),
-                  ProfileList(
-                    image: "lib/icons/logout.png",
-                    title: "Cerrar Sesión",
-                    color: Colors.red,
-                  ),
+                  const SizedBox(height: 15),
+                  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LoginScreen()),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          textStyle: GoogleFonts.inter(
+                            fontSize: 17.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ), // Color del texto y los iconos
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(30), // Bordes redondeados
+                          ),
+                          minimumSize: Size(
+                              MediaQuery.of(context).size.width * 0.9,
+                              60), // Tamaño mínimo
+                          elevation: 5, // Sombra para el botón
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.power_settings_new,
+                              size: 24,
+                              color: Colors.red,
+                            ),
+                            Expanded(
+                              child: Text(
+                                "Cerrar Sesión",
+                                style: GoogleFonts.inter(
+                                  fontSize: 17.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black, // Color del texto
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ))
                 ],
               ),
             ),
@@ -133,7 +176,7 @@ class ProfileScreen extends StatelessWidget {
       child: Text(
         "$title $value",
         style: GoogleFonts.poppins(
-          fontSize: 14.sp,
+          fontSize: 16.sp,
           fontWeight: FontWeight.w500,
           color: Colors.white,
         ),

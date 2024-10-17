@@ -1,4 +1,4 @@
-import 'package:proyecto_ortiz_nosiglia_movil/models/patient.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/models/allergy.dart';
 
 class Person {
   String id;

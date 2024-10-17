@@ -15,8 +15,6 @@ class Appointment {
   String? note;
   String? patientInstruction;
   String subject;
-  DateTime createdAt;
-  DateTime updatedAt;
 
   Appointment({
     required this.id,
@@ -35,8 +33,6 @@ class Appointment {
     this.note,
     this.patientInstruction,
     required this.subject,
-    required this.createdAt,
-    required this.updatedAt,
   });
 
   // Método para crear una instancia de Appointment a partir de un JSON
@@ -60,8 +56,6 @@ class Appointment {
       note: json['note'] as String?,
       patientInstruction: json['patientInstruction'] as String?,
       subject: json['subject'] as String,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
   }
 
@@ -83,8 +77,6 @@ class Appointment {
       'note': note,
       'patientInstruction': patientInstruction,
       'subject': subject,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
     };
   }
 }

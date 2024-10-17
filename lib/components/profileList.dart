@@ -4,64 +4,49 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ProfileList extends StatelessWidget {
   final String title;
-  final String image;
   final Color color;
 
-  const ProfileList(
-      {super.key,
-      required this.image,
-      required this.title,
-      required this.color});
+  const ProfileList({super.key, required this.title, required this.color});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+    return ElevatedButton(
+      onPressed: () {
+        print("Botón presionado");
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor:
+            const Color.fromARGB(255, 10, 218, 10), // Color de fondo
+        textStyle: GoogleFonts.inter(
+          fontSize: 17.sp,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ), // Color del texto y los iconos
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30), // Bordes redondeados
+        ),
+        minimumSize:
+            Size(MediaQuery.of(context).size.width * 0.9, 60), // Tamaño mínimo
+        elevation: 5, // Sombra para el botón
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () => {print("Botón presionado")},
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.06,
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: Row(children: [
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.06,
-                  width: MediaQuery.of(context).size.width * 0.1500,
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 247, 250, 247),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(Icons.power_settings_new),
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.06,
-                  width: MediaQuery.of(context).size.width * 0.5800,
-                  child: Row(children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Text(
-                        title,
-                        style: GoogleFonts.inter(
-                            fontSize: 17.sp,
-                            fontWeight: FontWeight.w600,
-                            color: color),
-                      ),
-                    ),
-                  ]),
-                ),
-                Container(
-                    height: MediaQuery.of(context).size.height * 0.06,
-                    width: MediaQuery.of(context).size.width * 0.1100,
-                    decoration: const BoxDecoration(),
-                    child: const Icon(Icons.arrow_right)),
-              ]),
+          const Icon(Icons.power_settings_new,
+              size: 24), // Icono a la izquierda
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              title,
+              style: GoogleFonts.inter(
+                fontSize: 17.sp,
+                fontWeight: FontWeight.w600,
+                color: Colors.black, // Color del texto
+              ),
+              textAlign: TextAlign.center,
             ),
           ),
+          const Icon(Icons.arrow_right, size: 24), // Icono a la derecha
         ],
       ),
     );
