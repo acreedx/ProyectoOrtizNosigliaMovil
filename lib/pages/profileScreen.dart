@@ -1,29 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:proyecto_ortiz_nosiglia_movil/models/person.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/pages/loginScreen.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/utils/DateTimeFormater.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/utils/JwtTokenHandler.dart';
-import 'package:proyecto_ortiz_nosiglia_movil/utils/JwtTokenHandler.dart';
 
-final Person person = Person(
-  id: "12345",
-  firstName: "Juan",
-  secondName: "Carlos",
-  familyName: "Pérez",
-  gender: "Male",
-  birthDate: DateTime(1990, 5, 20),
-  phone: "123456789",
-  mobile: "987654321",
-  email: "juan.perez@example.com",
-  addressLine: "Calle Falsa 123",
-  addressCity: "La Paz",
-  maritalStatus: "Single",
-  identification: "CI123456",
-  photoUrl:
-      "https://plus.unsplash.com/premium_photo-1689977968861-9c91dbb16049?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Zm90byUyMGRlJTIwcGVyZmlsfGVufDB8fDB8fHww",
-  allergies: [],
-);
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -60,9 +41,9 @@ class ProfileScreen extends StatelessWidget {
                           )
                         ],
                         shape: BoxShape.circle,
-                        image: person.photoUrl.isNotEmpty
+                        image: snapshot.data!['access_token']['photoUrl'].isNotEmpty
                             ? DecorationImage(
-                          image: NetworkImage(person.photoUrl),
+                          image: NetworkImage(snapshot.data!['access_token']['photoUrl'].toString()),
                           fit: BoxFit.cover,
                         )
                             : const DecorationImage(
@@ -76,7 +57,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               Text(
-                "${person.firstName} ${person.secondName ?? ''} ${person.familyName}",
+                "${snapshot.data!['access_token']['firstName']} ${snapshot.data!['access_token']['secondName'] ?? ''} ${snapshot.data!['access_token']['familyName']}",
                 style: GoogleFonts.poppins(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
@@ -90,8 +71,7 @@ class ProfileScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildInfoRow("Género:", snapshot.data!['access_token']['gender'].toString()),
-                    _buildInfoRow("Fecha de nacimiento:",
-                        "${person.birthDate.toLocal()}".split(' ')[0]),
+                    _buildInfoRow("Fecha de nacimiento:", formatDate(DateTime.parse(snapshot.data!['access_token']['birthDate']))),
                     _buildInfoRow("Teléfono:", snapshot.data!['access_token']['phone'] ?? "No disponible"),
                     _buildInfoRow("Celular:", snapshot.data!['access_token']['mobile'] ?? "No disponible"),
                     _buildInfoRow("Email:", snapshot.data!['access_token']['email']),

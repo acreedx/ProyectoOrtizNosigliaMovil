@@ -1,6 +1,4 @@
-import 'package:proyecto_ortiz_nosiglia_movil/models/allergy.dart';
-
-class Person {
+class Dentist {
   String id;
   String firstName;
   String? secondName;
@@ -15,9 +13,8 @@ class Person {
   String maritalStatus;
   String identification;
   String photoUrl;
-  List<Allergy> allergies;
 
-  Person({
+  Dentist({
     required this.id,
     required this.firstName,
     this.secondName,
@@ -32,11 +29,10 @@ class Person {
     required this.maritalStatus,
     required this.identification,
     required this.photoUrl,
-    required this.allergies,
   });
 
-  factory Person.fromJson(Map<String, dynamic> json) {
-    return Person(
+  factory Dentist.fromJson(Map<String, dynamic> json) {
+    return Dentist(
       id: json['id'] as String,
       firstName: json['firstName'] as String,
       secondName: json['secondName'] as String?,
@@ -51,9 +47,6 @@ class Person {
       maritalStatus: json['maritalStatus'] as String,
       identification: json['identification'] as String,
       photoUrl: json['photoUrl'] as String,
-      allergies: (json['allergies'] as List)
-          .map((allergy) => Allergy.fromJson(allergy))
-          .toList(),
     );
   }
 
@@ -73,7 +66,6 @@ class Person {
       'maritalStatus': maritalStatus,
       'identification': identification,
       'photoUrl': photoUrl,
-      'allergies': allergies.map((allergy) => allergy.toJson()).toList(),
     };
   }
 }
