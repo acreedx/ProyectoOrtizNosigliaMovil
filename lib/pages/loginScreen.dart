@@ -161,7 +161,7 @@ void _handleLogin(String username, String password, BuildContext context) async 
       return;
     }
     var token = await login(username, password);
-    var decodedToken = await getTokenInfo(token);
+    var decodedToken = await getTokenInfo();
     print(decodedToken['access_token']['id']);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(

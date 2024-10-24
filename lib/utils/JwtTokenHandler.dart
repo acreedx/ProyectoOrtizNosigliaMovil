@@ -30,8 +30,13 @@ Future<bool> isUserLogged() async {
   }
 }
 
-Map<String, dynamic> getTokenInfo(String token) {
-  return JwtDecoder.decode(token);
+Future<Map<String, dynamic>> getTokenInfo() async {
+  var token = await getToken();
+  if(token == null) {
+    return {};
+  }
+  var decodedToken = JwtDecoder.decode(token);
+  return decodedToken;
 }
 
 Future<bool> signOut() async {
