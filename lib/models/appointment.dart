@@ -10,7 +10,7 @@ class Appointment {
   String? originatingAppointment;
   DateTime start;
   DateTime end;
-  String account;
+  String? account;
   DateTime? cancellationDate;
   String? note;
   String? patientInstruction;
@@ -28,17 +28,16 @@ class Appointment {
     this.originatingAppointment,
     required this.start,
     required this.end,
-    required this.account,
+    this.account,
     this.cancellationDate,
     this.note,
     this.patientInstruction,
     required this.subject,
   });
 
-  // Método para crear una instancia de Appointment a partir de un JSON
   factory Appointment.fromJson(Map<String, dynamic> json) {
     return Appointment(
-      id: json['_id'] as String,
+      id: json['id'] as String,
       resourceType: json['resourceType'] as String,
       status: json['status'] as String,
       cancellationReason: json['cancellationReason'] as String?,
@@ -49,7 +48,7 @@ class Appointment {
       originatingAppointment: json['originatingAppointment'] as String?,
       start: DateTime.parse(json['start'] as String),
       end: DateTime.parse(json['end'] as String),
-      account: json['account'] as String,
+      account: json['account'] as String?,
       cancellationDate: json['cancellationDate'] != null
           ? DateTime.parse(json['cancellationDate'] as String)
           : null,
@@ -61,7 +60,7 @@ class Appointment {
 
   Map<String, dynamic> toJson() {
     return {
-      '_id': id,
+      'id': id,
       'resourceType': resourceType,
       'status': status,
       'cancellationReason': cancellationReason,

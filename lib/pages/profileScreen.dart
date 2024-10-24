@@ -1,27 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:proyecto_ortiz_nosiglia_movil/models/person.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/pages/loginScreen.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/utils/DateTimeFormater.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/utils/JwtTokenHandler.dart';
 
-final Person person = Person(
-  id: "12345",
-  firstName: "Juan",
-  secondName: "Carlos",
-  familyName: "Pérez",
-  gender: "Male",
-  birthDate: DateTime(1990, 5, 20),
-  phone: "123456789",
-  mobile: "987654321",
-  email: "juan.perez@example.com",
-  addressLine: "Calle Falsa 123",
-  addressCity: "La Paz",
-  maritalStatus: "Single",
-  identification: "CI123456",
-  photoUrl:
-      "https://plus.unsplash.com/premium_photo-1689977968861-9c91dbb16049?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Zm90byUyMGRlJTIwcGVyZmlsfGVufDB8fDB8fHww",
-  allergies: [],
-);
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -30,94 +13,90 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.orange,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 50),
-            Center(
-              child: Stack(
-                children: [
-                  const SizedBox(height: 50),
-                  Container(
-                    width: 110,
-                    height: 110,
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 4, color: Colors.white),
-                      boxShadow: [
-                        BoxShadow(
-                          spreadRadius: 2,
-                          blurRadius: 10,
-                          color: Colors.black.withOpacity(0.1),
+      body: FutureBuilder<Map<String, dynamic>>(
+          future: getTokenInfo(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasData) {
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 50),
+              Center(
+                child: Stack(
+                  children: [
+                    const SizedBox(height: 50),
+                    Container(
+                      width: 110,
+                      height: 110,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 4, color: Colors.white),
+                        boxShadow: [
+                          BoxShadow(
+                            spreadRadius: 2,
+                            blurRadius: 10,
+                            color: Colors.black.withOpacity(0.1),
+                          )
+                        ],
+                        shape: BoxShape.circle,
+                        image: snapshot.data!['access_token']['photoUrl'].isNotEmpty
+                            ? DecorationImage(
+                          image: NetworkImage(snapshot.data!['access_token']['photoUrl'].toString()),
+                          fit: BoxFit.cover,
                         )
-                      ],
-                      shape: BoxShape.circle,
-                      image: person.photoUrl.isNotEmpty
-                          ? DecorationImage(
-                              image: NetworkImage(person.photoUrl),
-                              fit: BoxFit.cover,
-                            )
-                          : const DecorationImage(
-                              image: AssetImage("lib/icons/avatar.png"),
-                              fit: BoxFit.cover,
-                            ),
+                            : const DecorationImage(
+                          image: AssetImage("lib/icons/avatar.png"),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 30),
-            Text(
-              "${person.firstName} ${person.secondName ?? ''} ${person.familyName}",
-              style: GoogleFonts.poppins(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 30),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildInfoRow("Género:",
-                      person.gender == "Male" ? "Masculino" : "Femenino"),
-                  _buildInfoRow("Fecha de nacimiento:",
-                      "${person.birthDate.toLocal()}".split(' ')[0]),
-                  _buildInfoRow("Teléfono:", person.phone ?? "No disponible"),
-                  _buildInfoRow("Celular:", person.mobile ?? "No disponible"),
-                  _buildInfoRow("Email:", person.email),
-                  _buildInfoRow("Dirección:",
-                      "${person.addressLine}, ${person.addressCity}"),
-                  _buildInfoRow("Estado Civil:",
-                      person.maritalStatus == "Married" ? "Casado" : "Soltero"),
-                  _buildInfoRow("CI:", person.identification),
-                ],
-              ),
-            ),
-            const SizedBox(height: 50),
-            Container(
-              height: 100,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
+                  ],
                 ),
               ),
-              child: Column(
+              const SizedBox(height: 30),
+              Text(
+                "${snapshot.data!['access_token']['firstName']} ${snapshot.data!['access_token']['secondName'] ?? ''} ${snapshot.data!['access_token']['familyName']}",
+                style: GoogleFonts.poppins(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 30),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildInfoRow("Género:", snapshot.data!['access_token']['gender'].toString()),
+                    _buildInfoRow("Fecha de nacimiento:", formatDate(DateTime.parse(snapshot.data!['access_token']['birthDate']))),
+                    _buildInfoRow("Teléfono:", snapshot.data!['access_token']['phone'] ?? "No disponible"),
+                    _buildInfoRow("Celular:", snapshot.data!['access_token']['mobile'] ?? "No disponible"),
+                    _buildInfoRow("Email:", snapshot.data!['access_token']['email']),
+                    _buildInfoRow("Dirección:",
+                        "${snapshot.data!['access_token']['addressLine']}, ${snapshot.data!['access_token']['addressCity']}"),
+                    _buildInfoRow("Estado Civil:",
+                        snapshot.data!['access_token']['maritalStatus'] == 'Single' ? 'Soltero' : 'Casado'),
+                    _buildInfoRow("CI:", snapshot.data!['access_token']['identification']),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 50),
+              Column(
                 children: [
                   const SizedBox(height: 15),
                   Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginScreen()),
-                          );
+                        onPressed: () async {
+                          if(await signOut() == true) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => const LoginScreen()),
+                            );
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
@@ -128,7 +107,7 @@ class ProfileScreen extends StatelessWidget {
                           ), // Color del texto y los iconos
                           shape: RoundedRectangleBorder(
                             borderRadius:
-                                BorderRadius.circular(30), // Bordes redondeados
+                            BorderRadius.circular(30), // Bordes redondeados
                           ),
                           minimumSize: Size(
                               MediaQuery.of(context).size.width * 0.9,
@@ -159,11 +138,14 @@ class ProfileScreen extends StatelessWidget {
                       ))
                 ],
               ),
-            ),
-          ],
-        ),
-      ),
-    );
+            ],
+          ),
+        );
+        }
+        return Container();
+          }
+      ));
+
   }
 
   Widget _buildInfoRow(String title, String value) {

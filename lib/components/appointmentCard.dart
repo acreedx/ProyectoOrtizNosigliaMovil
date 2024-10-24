@@ -4,24 +4,29 @@ import 'package:page_transition/page_transition.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/models/appointmentTestList.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/pages/appointmentComplete.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/pages/appointmentDetail.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/providers/citas.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class appointmentCard extends StatelessWidget {
+  final String id;
   final String mainText;
   final String subText;
   final String image;
   final String date;
   final String time;
   final String confirmation;
+  final String status;
 
   const appointmentCard(
       {super.key,
+        required this.id,
       required this.mainText,
       required this.subText,
       required this.date,
       required this.confirmation,
       required this.time,
-      required this.image});
+      required this.image,
+      required this.status});
 
   @override
   Widget build(BuildContext context) {
@@ -60,23 +65,23 @@ class appointmentCard extends StatelessWidget {
                       ]),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.07,
-                  width: MediaQuery.of(context).size.width * 0.2,
-                  decoration: const BoxDecoration(
-                    color: Colors.blue,
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          "https://plus.unsplash.com/premium_photo-1689977968861-9c91dbb16049?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Zm90byUyMGRlJTIwcGVyZmlsfGVufDB8fDB8fHww"),
-                      filterQuality: FilterQuality.high,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              )
+              //Padding(
+              //  padding: const EdgeInsets.all(8.0),
+              //  child: Container(
+              //    height: MediaQuery.of(context).size.height * 0.07,
+              //    width: MediaQuery.of(context).size.width * 0.2,
+              //    decoration: const BoxDecoration(
+              //      color: Colors.blue,
+              //      shape: BoxShape.circle,
+              //      image: DecorationImage(
+              //        image: NetworkImage(
+              //            "https://plus.unsplash.com/premium_photo-1689977968861-9c91dbb16049?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Zm90byUyMGRlJTIwcGVyZmlsfGVufDB8fDB8fHww"),
+              //        filterQuality: FilterQuality.high,
+              //        fit: BoxFit.cover,
+              //      ),
+              //    ),
+              //  ),
+              //)
             ],
           ),
           SizedBox(
@@ -146,7 +151,30 @@ class appointmentCard extends StatelessWidget {
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 5),
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    try {
+                      var mensaje = await cancelAppointment(id);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(mensaje),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                    } catch(e) {
+                      String errorMessage;
+                      if(e is Exception) {
+                        errorMessage = e.toString().replaceFirst('Exception: ', '');
+                      } else {
+                        errorMessage = 'Error inesperado';
+                      }
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(errorMessage),
+                          backgroundColor: Colors.red,
+                        ),
+                        );
+                      }
+                    },
                   child: Text(
                     "Cancelar",
                     style: GoogleFonts.poppins(

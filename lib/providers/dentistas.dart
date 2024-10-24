@@ -1,29 +1,26 @@
 import 'dart:convert';
 import 'package:proyecto_ortiz_nosiglia_movil/config/consts.dart';
 import 'package:http/http.dart' as http;
-import 'package:proyecto_ortiz_nosiglia_movil/utils/JwtTokenHandler.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/models/dentist.dart';
+String MODULE_NAME = '/api/movil/dentistas';
 
-String MODULE_NAME = '/api/movil/login';
-
-Future<String> login(String username, String password) async {
+Future<List<Dentist>> getDentists() async {
   Uri uri = Uri.https(BASE_URL, MODULE_NAME);
 
-  var response = await http.post(
+  var response = await http.get(
     uri,
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
     },
-    body: jsonEncode(<String, String>{
-      'username': username,
-      'password': password,
-    }),
   );
 
   var res = jsonDecode(response.body);
   if (response.statusCode == 200) {
-    var token = res['access_token'];
-    await storeToken(token);
-    return res['access_token'];
+    List<Dentist> dentists = (res['dentistas'] as List)
+        .map((dentistJson) => Dentist.fromJson(dentistJson))
+        .toList();
+    print(dentists);
+    return dentists;
   } else {
     var error = res['error'] ?? 'Error desconocido';
     throw Exception(error);
