@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/models/person.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/pages/loginScreen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/utils/JwtTokenHandler.dart';
 
 final Person person = Person(
   id: "12345",
@@ -96,69 +97,59 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 50),
-            Container(
-              height: 100,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                ),
-              ),
-              child: Column(
-                children: [
-                  const SizedBox(height: 15),
-                  Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: ElevatedButton(
-                        onPressed: () {
+            Column(
+              children: [
+                const SizedBox(height: 15),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if(await signOut() == true) {
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginScreen()),
+                            MaterialPageRoute(builder: (context) => const LoginScreen()),
                           );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          textStyle: GoogleFonts.inter(
-                            fontSize: 17.sp,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ), // Color del texto y los iconos
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(30), // Bordes redondeados
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        textStyle: GoogleFonts.inter(
+                          fontSize: 17.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ), // Color del texto y los iconos
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadius.circular(30), // Bordes redondeados
+                        ),
+                        minimumSize: Size(
+                            MediaQuery.of(context).size.width * 0.9,
+                            60), // Tamaño mínimo
+                        elevation: 5, // Sombra para el botón
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.power_settings_new,
+                            size: 24,
+                            color: Colors.red,
                           ),
-                          minimumSize: Size(
-                              MediaQuery.of(context).size.width * 0.9,
-                              60), // Tamaño mínimo
-                          elevation: 5, // Sombra para el botón
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.power_settings_new,
-                              size: 24,
-                              color: Colors.red,
-                            ),
-                            Expanded(
-                              child: Text(
-                                "Cerrar Sesión",
-                                style: GoogleFonts.inter(
-                                  fontSize: 17.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black, // Color del texto
-                                ),
-                                textAlign: TextAlign.center,
+                          Expanded(
+                            child: Text(
+                              "Cerrar Sesión",
+                              style: GoogleFonts.inter(
+                                fontSize: 17.sp,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black, // Color del texto
                               ),
+                              textAlign: TextAlign.center,
                             ),
-                          ],
-                        ),
-                      ))
-                ],
-              ),
+                          ),
+                        ],
+                      ),
+                    ))
+              ],
             ),
           ],
         ),
