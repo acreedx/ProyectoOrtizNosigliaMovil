@@ -76,7 +76,7 @@ class _AppointmentCompleteScreenState extends State<AppointmentCompleteScreen> {
             TextField(
               controller: _diagnosisController,
               maxLines: 3,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Ingrese el diagnóstico...',
               ),

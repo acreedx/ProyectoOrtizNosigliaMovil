@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/models/allergy.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/models/appointment.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/models/personTestList.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/pages/appointmentComplete.dart';
-import 'package:proyecto_ortiz_nosiglia_movil/pages/profileScreen.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/utils/DateTimeFormater.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 

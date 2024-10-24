@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:proyecto_ortiz_nosiglia_movil/components/appointmentListView.dart';
-import 'package:proyecto_ortiz_nosiglia_movil/components/profileList.dart';
-import 'package:proyecto_ortiz_nosiglia_movil/models/allergy.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/models/person.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/pages/loginScreen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';

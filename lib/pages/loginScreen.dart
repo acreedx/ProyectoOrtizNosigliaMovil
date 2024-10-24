@@ -4,6 +4,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/components/Auth_text_field.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/components/Password_text_field.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/pages/menuScreen.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/providers/login.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -66,12 +67,23 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               child: GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                      context,
-                      PageTransition(
-                          type: PageTransitionType.fade,
-                          child: const MenuScreen()));
+                onTap: () async {
+                  try {
+                    await login('username', 'password');
+                    //Navigator.pushReplacement(
+                    //  context,
+                    //  PageTransition(
+                    //      type: PageTransitionType.fade,
+                    //      child: const MenuScreen()));
+                  } catch (e) {
+                    print('$e');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('$e'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
                 },
                 child: Text(
                   "Iniciar Sesión",

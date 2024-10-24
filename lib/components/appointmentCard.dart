@@ -51,7 +51,7 @@ class appointmentCard extends StatelessWidget {
                               fontSize: 15.sp, fontWeight: FontWeight.w600),
                         ),
                         Text(
-                          'Tipo de atención: ${subText}',
+                          'Tipo de atención: $subText',
                           style: GoogleFonts.poppins(
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w600,
