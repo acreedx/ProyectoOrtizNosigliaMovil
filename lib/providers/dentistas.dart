@@ -14,12 +14,12 @@ Future<List<Dentist>> getDentists() async {
     },
   );
 
-  var res = jsonDecode(response.body);
+  var res = jsonDecode(utf8.decode(response.bodyBytes));
   if (response.statusCode == 200) {
     List<Dentist> dentists = (res['dentistas'] as List)
         .map((dentistJson) => Dentist.fromJson(dentistJson))
         .toList();
-    print(dentists);
+    print(res['dentistas']);
     return dentists;
   } else {
     var error = res['error'] ?? 'Error desconocido';

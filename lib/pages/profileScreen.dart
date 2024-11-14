@@ -43,7 +43,7 @@ class ProfileScreen extends StatelessWidget {
                         shape: BoxShape.circle,
                         image: snapshot.data!['access_token']['photoUrl'].isNotEmpty
                             ? DecorationImage(
-                          image: NetworkImage(snapshot.data!['access_token']['photoUrl'].toString()),
+                          image: NetworkImage("https://proyecto-ortiz-nosiglia-front-end-r7fs.vercel.app/${snapshot.data!['access_token']['photoUrl']}"),
                           fit: BoxFit.cover,
                         )
                             : const DecorationImage(

@@ -76,7 +76,9 @@ class _AppointmentCreateScreenState extends State<AppointmentCreateScreen> {
               ),
               const SizedBox(width: 10),
               TextButton(
-                onPressed: details.onStepCancel,
+                onPressed: () async => {
+
+                },
                 child: const Text('Cancelar',
                     style: TextStyle(color: Colors.orange)),
               ),

@@ -31,7 +31,6 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          // Sección de dentistas destacados
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Row(
@@ -50,7 +49,7 @@ class HomeScreen extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           FutureBuilder<List<Dentist>>(
-            future: getDentists(), // Cambia los valores según sea necesario
+            future: getDentists(),
             builder: (BuildContext context, AsyncSnapshot<List<Dentist>> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
@@ -73,7 +72,7 @@ class HomeScreen extends StatelessWidget {
                           return DentistCard(
                             name: dentist.firstName + (dentist.secondName != null ? ' ${dentist.secondName}' : '') + ' ${dentist.familyName}',
                             specialty: 'Dentista',
-                            imageUrl: dentist.photoUrl,
+                            imageUrl: "https://proyecto-ortiz-nosiglia-front-end-r7fs.vercel.app/${dentist.photoUrl}",
                         );
                       },
                     )
