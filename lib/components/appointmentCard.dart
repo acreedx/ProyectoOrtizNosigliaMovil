@@ -1,38 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:proyecto_ortiz_nosiglia_movil/models/appointmentTestList.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/enums/appointmentStatus.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/modals/cancelAppointmentModal.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/modals/completeAppointmentFormDialog.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/modals/confirmAppointmentModal.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/modals/markAsNotAssistedModal.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/models/appointmentDetail.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/pages/appointmentComplete.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/pages/appointmentDetail.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/providers/citas.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/utils/AppointmentStatusFormater.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class appointmentCard extends StatelessWidget {
-  final String id;
-  final String mainText;
-  final String subText;
-  final String image;
-  final String date;
-  final String time;
-  final String confirmation;
-  final String status;
+  final AppointmentDetail appointment;
+  final VoidCallback onRegistroCreado;
 
   const appointmentCard(
-      {super.key,
-        required this.id,
-      required this.mainText,
-      required this.subText,
-      required this.date,
-      required this.confirmation,
-      required this.time,
-      required this.image,
-      required this.status});
+      {super.key, required this.appointment, required this.onRegistroCreado});
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.22,
         width: MediaQuery.of(context).size.width * 0.9,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -51,12 +42,12 @@ class appointmentCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          mainText,
+                          "Paciente ${'${appointment.patient.first_name} ${appointment.patient.last_name}'}",
                           style: GoogleFonts.poppins(
                               fontSize: 15.sp, fontWeight: FontWeight.w600),
                         ),
                         Text(
-                          'Tipo de atención: $subText',
+                          'Tipo de atención: ${appointment.specialty}',
                           style: GoogleFonts.poppins(
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w600,
@@ -65,23 +56,22 @@ class appointmentCard extends StatelessWidget {
                       ]),
                 ),
               ),
-              //Padding(
-              //  padding: const EdgeInsets.all(8.0),
-              //  child: Container(
-              //    height: MediaQuery.of(context).size.height * 0.07,
-              //    width: MediaQuery.of(context).size.width * 0.2,
-              //    decoration: const BoxDecoration(
-              //      color: Colors.blue,
-              //      shape: BoxShape.circle,
-              //      image: DecorationImage(
-              //        image: NetworkImage(
-              //            "https://plus.unsplash.com/premium_photo-1689977968861-9c91dbb16049?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Zm90byUyMGRlJTIwcGVyZmlsfGVufDB8fDB8fHww"),
-              //        filterQuality: FilterQuality.high,
-              //        fit: BoxFit.cover,
-              //      ),
-              //    ),
-              //  ),
-              //)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.07,
+                  width: MediaQuery.of(context).size.width * 0.2,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: NetworkImage(appointment.patient.photo_url),
+                      filterQuality: FilterQuality.high,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
           SizedBox(
@@ -94,7 +84,7 @@ class appointmentCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Fecha: $date",
+                      "Fecha: ${appointment.programed_date_time.day}/${appointment.programed_date_time.month}/${appointment.programed_date_time.year}",
                       style: GoogleFonts.poppins(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w600,
@@ -102,7 +92,7 @@ class appointmentCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "De: $time",
+                      "De: ${(appointment.programed_date_time.hour).toString().padLeft(2, '0')}:${appointment.programed_date_time.minute.toString().padLeft(2, '0')}",
                       style: GoogleFonts.poppins(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w600,
@@ -110,7 +100,7 @@ class appointmentCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "a: $time",
+                      "a: ${(appointment.programed_end_date_time.hour).toString().padLeft(2, '0')}:${appointment.programed_end_date_time.minute.toString().padLeft(2, '0')}",
                       style: GoogleFonts.poppins(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w600,
@@ -118,17 +108,12 @@ class appointmentCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      confirmation,
+                      appointmentStatusFormatter(appointment.status),
                       style: GoogleFonts.poppins(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w600,
-                        color: confirmation == "pendiente"
-                            ? Colors.orange
-                            : confirmation == "cancelada"
-                                ? Colors.red
-                                : confirmation == "completada"
-                                    ? Colors.green
-                                    : const Color.fromARGB(255, 99, 99, 99),
+                        color:
+                            statusColorMap[appointment.status] ?? Colors.black,
                       ),
                     ),
                   ],
@@ -136,129 +121,181 @@ class appointmentCard extends StatelessWidget {
               )),
           Padding(
             padding: const EdgeInsets.all(5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Wrap(
+              spacing: 4,
+              alignment: WrapAlignment.spaceBetween,
               children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                /*if (appointment.status !=
+                        AppointmentStatus.STATUS_NO_ASISTIDA &&
+                    appointment.status != AppointmentStatus.STATUS_COMPLETADA &&
+                    appointment.status != AppointmentStatus.STATUS_CANCELADA)
+                  //boton editar
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.amber,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 0),
                     ),
-                    minimumSize: Size(
-                      MediaQuery.of(context).size.width * 0.25,
-                      30,
+                    onPressed: () async {
+                      //todo hacer el formulario de editar
+                      mostrarAlertaConfirmacion(context, onRegistroCreado, "1");
+                    },
+                    child: Text(
+                      "Editar",
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: const Color.fromARGB(255, 252, 252, 252),
+                      ),
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 5),
+                  ),*/
+                if (appointment.status == AppointmentStatus.STATUS_PENDIENTE)
+                  //boton confirmar
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 2, horizontal: 4),
+                    ),
+                    onPressed: () async {
+                      confirmarCita(context, onRegistroCreado, appointment.id.toString());
+                    },
+                    child: Text(
+                      "Confirmar",
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: const Color.fromARGB(255, 252, 252, 252),
+                      ),
+                    ),
                   ),
-                  onPressed: () async {
-                    try {
-                      var mensaje = await cancelAppointment(id);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(mensaje),
-                          backgroundColor: Colors.green,
+                if (appointment.status == AppointmentStatus.STATUS_CONFIRMADA)
+                  //boton completar
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 2, horizontal: 4),
+                    ),
+                    onPressed: () async {
+                      Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.rightToLeft,
+                          child: AppointmentCompleteScreen(
+                            id_cita: appointment.id.toString(),
+                          ),
+                          inheritTheme: true,
+                          ctx: context,
+                          duration: const Duration(),
                         ),
                       );
-                    } catch(e) {
-                      String errorMessage;
-                      if(e is Exception) {
-                        errorMessage = e.toString().replaceFirst('Exception: ', '');
-                      } else {
-                        errorMessage = 'Error inesperado';
-                      }
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(errorMessage),
-                          backgroundColor: Colors.red,
-                        ),
-                        );
-                      }
                     },
-                  child: Text(
-                    "Cancelar",
-                    style: GoogleFonts.poppins(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                      color: const Color.fromARGB(255, 252, 252, 252),
+                    child: Text(
+                      "Completar",
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: const Color.fromARGB(255, 252, 252, 252),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(8), // Bordes redondeados
+                if (appointment.status == AppointmentStatus.STATUS_CONFIRMADA)
+                  //boton no asistida
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.purple,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 2, horizontal: 4),
                     ),
-                    minimumSize: Size(
-                      MediaQuery.of(context).size.width * 0.25,
-                      30,
+                    onPressed: () async {
+                      marcarCitaComoNoAsistida(
+                          context, onRegistroCreado, appointment.id.toString());
+                    },
+                    child: Text(
+                      "Marcar como no asistida",
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: const Color.fromARGB(255, 252, 252, 252),
+                      ),
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 5),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageTransition(
-                        type: PageTransitionType.rightToLeft,
-                        child: AppointmentDetailScreen(
-                          appointment: appointments[0],
+                if (appointment.status !=
+                        AppointmentStatus.STATUS_NO_ASISTIDA &&
+                    appointment.status != AppointmentStatus.STATUS_COMPLETADA &&
+                    appointment.status != AppointmentStatus.STATUS_CANCELADA)
+                  //boton cancelar
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 2, horizontal: 4),
+                    ),
+                    onPressed: () async {
+                      cancelarCita(
+                          context, onRegistroCreado, appointment.id.toString());
+                    },
+                    child: Text(
+                      "Cancelar",
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: const Color.fromARGB(255, 252, 252, 252),
+                      ),
+                    ),
+                  ),
+                if (!(appointment.status !=
+                        AppointmentStatus.STATUS_NO_ASISTIDA &&
+                    appointment.status != AppointmentStatus.STATUS_COMPLETADA &&
+                    appointment.status != AppointmentStatus.STATUS_CANCELADA))
+                  //boton informacion
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.indigo,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 2, horizontal: 4),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.rightToLeft,
+                          child: AppointmentDetailScreen(
+                            id_cita: appointment.id.toString(),
+                          ),
+                          inheritTheme: true,
+                          ctx: context,
+                          duration: const Duration(),
                         ),
-                        inheritTheme: true,
-                        ctx: context,
-                        duration: const Duration(),
+                      );
+                    },
+                    child: Text(
+                      "Información",
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: const Color.fromARGB(255, 252, 252, 252),
                       ),
-                    );
-                  },
-                  child: Text(
-                    "Información",
-                    style: GoogleFonts.poppins(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                      color: const Color.fromARGB(255, 252, 252, 252),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    minimumSize: Size(
-                      MediaQuery.of(context).size.width * 0.25,
-                      30,
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageTransition(
-                        type: PageTransitionType.rightToLeft,
-                        child: const AppointmentCompleteScreen(),
-                        inheritTheme: true,
-                        ctx: context,
-                        duration: const Duration(),
-                      ),
-                    );
-                  },
-                  child: Text(
-                    "Completar",
-                    style: GoogleFonts.poppins(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                      color: const Color.fromARGB(255, 252, 252, 252),
-                    ),
-                  ),
-                ),
               ],
             ),
           )

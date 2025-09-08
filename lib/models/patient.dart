@@ -1,71 +1,67 @@
 class Patient {
-  String id;
-  String firstName;
-  String? secondName;
-  String familyName;
-  String gender;
-  DateTime birthDate;
-  String? phone;
-  String? mobile;
-  String email;
-  String addressLine;
-  String addressCity;
-  String maritalStatus;
+  int id;
   String identification;
-  String photoUrl;
+  String first_name;
+  String last_name;
+  DateTime birth_date;
+  String phone;
+  String mobile;
+  String email;
+  String address_line;
+  String address_city;
+  String photo_url;
+  String? allergies;
+  String? preconditions;
 
   Patient({
     required this.id,
-    required this.firstName,
-    this.secondName,
-    required this.familyName,
-    required this.gender,
-    required this.birthDate,
-    this.phone,
-    this.mobile,
-    required this.email,
-    required this.addressLine,
-    required this.addressCity,
-    required this.maritalStatus,
     required this.identification,
-    required this.photoUrl,
+    required this.first_name,
+    required this.last_name,
+    required this.birth_date,
+    required this.phone,
+    required this.mobile,
+    required this.email,
+    required this.address_line,
+    required this.address_city,
+    required this.photo_url,
+    this.allergies,
+    this.preconditions
   });
 
   factory Patient.fromJson(Map<String, dynamic> json) {
     return Patient(
-      id: json['id'] as String,
-      firstName: json['firstName'] as String,
-      secondName: json['secondName'] as String?,
-      familyName: json['familyName'] as String,
-      gender: json['gender'] as String,
-      birthDate: DateTime.parse(json['birthDate'] as String),
-      phone: json['phone'] as String?,
-      mobile: json['mobile'] as String?,
-      email: json['email'] as String,
-      addressLine: json['addressLine'] as String,
-      addressCity: json['addressCity'] as String,
-      maritalStatus: json['maritalStatus'] as String,
-      identification: json['identification'] as String,
-      photoUrl: json['photoUrl'] as String,
+      id: int.parse(json['user']['id'].toString()),
+      identification: json['user']['identification'] as String,
+      first_name: json['user']['first_name'] as String,
+      last_name: json['user']['last_name'] as String,
+      birth_date: DateTime.parse(json['user']['birth_date'] as String),
+      phone: json['user']['phone'] as String,
+      mobile: json['user']['mobile'] as String,
+      email: json['user']['email'] as String,
+      address_line: json['user']['address_line'] as String,
+      address_city: json['user']['address_city'] as String,
+      photo_url: json['user']['photo_url'] as String,
+      allergies: json['allergies'] as String?,
+      preconditions: json['preconditions'] as String?,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'firstName': firstName,
-      'secondName': secondName,
-      'familyName': familyName,
-      'gender': gender,
-      'birthDate': birthDate.toIso8601String(),
+      'identification': identification,
+      'first_name': first_name,
+      'last_name': last_name,
+      'birth_date': birth_date.toIso8601String(),
       'phone': phone,
       'mobile': mobile,
       'email': email,
-      'addressLine': addressLine,
-      'addressCity': addressCity,
-      'maritalStatus': maritalStatus,
-      'identification': identification,
-      'photoUrl': photoUrl,
+      'address_line': address_line,
+      'address_city': address_city,
+      'photo_url': photo_url,
+      'allergies': allergies,
+      'preconditions': preconditions,
     };
   }
 }

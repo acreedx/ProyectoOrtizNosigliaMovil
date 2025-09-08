@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/models/dentist.dart';
 
 class DentistCard extends StatelessWidget {
-  final String name;
-  final String specialty;
-  final String imageUrl;
-
-  const DentistCard({
+  final Dentist dentista;
+  final String especialidad = "Dentista";
+  DentistCard({
     Key? key,
-    required this.name,
-    required this.specialty,
-    required this.imageUrl,
+    required this.dentista
   }) : super(key: key);
 
   @override
@@ -18,7 +15,7 @@ class DentistCard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Container(
           width: 150,
-          margin: const EdgeInsets.symmetric(horizontal: 8),
+          margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
@@ -36,7 +33,7 @@ class DentistCard extends StatelessWidget {
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(10)),
                 child: Image.network(
-                  imageUrl,
+                  dentista.photo_url,
                   height: 100,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -48,7 +45,7 @@ class DentistCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      name,
+                      "${dentista.first_name} ${dentista.last_name}",
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -56,7 +53,7 @@ class DentistCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      specialty,
+                      especialidad,
                       style: const TextStyle(
                         fontSize: 14,
                         color: Colors.grey,

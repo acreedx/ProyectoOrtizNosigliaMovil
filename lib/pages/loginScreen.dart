@@ -7,6 +7,7 @@ import 'package:proyecto_ortiz_nosiglia_movil/pages/menuScreen.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/providers/login.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/utils/JwtTokenHandler.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -87,8 +88,10 @@ Widget _body(context) {
         height: MediaQuery.of(context).size.height * 0.05,
         width: MediaQuery.of(context).size.width * 0.9,
         child: ElevatedButton(
-          onPressed: () {
-            // Perform verification or other actions here
+          onPressed: () async {
+            String username = usernameController.text;
+            String password = passwordController.text;
+            _handleLogin(username, password, context);
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.orange,
@@ -96,21 +99,14 @@ Widget _body(context) {
               borderRadius: BorderRadius.circular(30),
             ),
           ),
-          child: GestureDetector(
-            onTap: () async {
-              String username = usernameController.text;
-              String password = passwordController.text;
-              _handleLogin(username, password, context);
-            },
-            child: Text(
-              "Iniciar Sesión",
-              textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
-                fontSize: 18.sp,
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-                letterSpacing: 0,
-              ),
+          child: Text(
+            "Iniciar Sesión",
+            textAlign: TextAlign.center,
+            style: GoogleFonts.poppins(
+              fontSize: 18.sp,
+              color: Colors.white,
+              fontWeight: FontWeight.w500,
+              letterSpacing: 0,
             ),
           ),
         ),
@@ -127,12 +123,18 @@ Widget _body(context) {
             GoogleFonts.poppins(fontSize: 15.sp, color: Colors.black87),
           ),
           GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  PageTransition(
-                      type: PageTransitionType.rightToLeft,
-                      child: const Placeholder()));
+            onTap: () async {
+              const url = "https://proyecto-ortiz-nosiglia-front-end-r7fs.vercel.app/paginaweb/inicio_de_sesion/registro";
+              if (await canLaunch(url)) {
+                await launch(url);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('No se pudo abrir la URL'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
             },
             child: Text(
               "Crear cuenta",

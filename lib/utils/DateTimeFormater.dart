@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
 String formatTime(DateTime dateTime) {
-  return DateFormat('hh:mm a').format(dateTime);
+  return DateFormat('hh:mm').format(dateTime);
 }
 
 String calculateAge(DateTime birthDate) {
@@ -16,5 +16,10 @@ String calculateAge(DateTime birthDate) {
 
 String formatDate(DateTime dateTime) {
   final DateFormat formatter = DateFormat('dd/MM/yyyy');
+  return formatter.format(dateTime);
+}
+
+String formatDateISO(DateTime dateTime) {
+  final DateFormat formatter = DateFormat('yyyy-MM-dd');
   return formatter.format(dateTime);
 }

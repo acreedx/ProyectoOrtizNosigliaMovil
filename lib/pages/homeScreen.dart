@@ -2,35 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/components/appointmentCard.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/components/dentistCard.dart';
-import 'package:proyecto_ortiz_nosiglia_movil/models/appointment.dart';
-import 'package:proyecto_ortiz_nosiglia_movil/models/appointmentTestList.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/models/appointmentDetail.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/models/dentist.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/providers/citas.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/providers/dentistas.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late Future<AppointmentDetail?> _futureActualAppointment;
+
+  @override
+  void initState() {
+    super.initState();
+    _futureActualAppointment = getCurrentAppointment();
+  }
+  void _actualizarDatos() {
+    setState(() {
+      _futureActualAppointment = getCurrentAppointment();
+    });
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Inicio",
+          style: GoogleFonts.poppins(color: Colors.orange, fontSize: 18.sp),
+        ),
+        centerTitle: true,
+        elevation: 0,
+        toolbarHeight: 60,
+        backgroundColor: Colors.white,
+      ),
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       body: SingleChildScrollView(
         child: Column(children: [
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Text(
-              "Inicio",
-              style: GoogleFonts.inter(
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
-                color: Colors.orange,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Row(
@@ -52,11 +65,11 @@ class HomeScreen extends StatelessWidget {
             future: getDentists(),
             builder: (BuildContext context, AsyncSnapshot<List<Dentist>> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
                 return Center(child: Text('Error: ${snapshot.error}'));
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Center(child: Text('No se encontraron dentistas.'));
+                return const Center(child: Text('No se encontraron dentistas.'));
               } else {
                 return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -69,10 +82,7 @@ class HomeScreen extends StatelessWidget {
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
                           final dentist = snapshot.data![index];
-                          return DentistCard(
-                            name: dentist.firstName + (dentist.secondName != null ? ' ${dentist.secondName}' : '') + ' ${dentist.familyName}',
-                            specialty: 'Dentista',
-                            imageUrl: "https://proyecto-ortiz-nosiglia-front-end-r7fs.vercel.app/${dentist.photoUrl}",
+                          return DentistCard(dentista: dentist,
                         );
                       },
                     )
@@ -96,8 +106,8 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                FutureBuilder<Appointment?>(
-                  future: getCurrentAppointment(),
+                FutureBuilder<AppointmentDetail?>(
+                  future: _futureActualAppointment,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const CircularProgressIndicator();
@@ -106,17 +116,15 @@ class HomeScreen extends StatelessWidget {
                     } else if (!snapshot.hasData || snapshot.data == null) {
                       return const Text("No hay citas actuales.");
                     } else {
-                      Appointment appointment = snapshot.data!;
-                      return appointmentCard(
-                        id: appointment.id,
-                        confirmation: appointment.status,
-                        mainText: "Paciente ${appointment.subject}",
-                        subText: appointment.specialty,
-                        date: "${appointment.start.day}/${appointment.start.month}/${appointment.start.year}",
-                        time: "${appointment.start.hour}:${appointment.start.minute}",
-                        image: "lib/icons/male-doctor.png",
-                        status: appointment.status,
-                      );
+                      if(snapshot.data != null) {
+                        AppointmentDetail appointment = snapshot.data!;
+                        return appointmentCard(
+                          appointment: appointment,
+                          onRegistroCreado: _actualizarDatos,
+                        );
+                      } else {
+                        return const Text("No hay citas actuales.");
+                      }
                     }
                   },
                 )
@@ -128,4 +136,5 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+
 }

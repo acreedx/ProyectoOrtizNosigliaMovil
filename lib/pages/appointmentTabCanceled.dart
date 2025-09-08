@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/components/appointmentCard.dart';
-import 'package:proyecto_ortiz_nosiglia_movil/models/appointment.dart';
-import 'package:proyecto_ortiz_nosiglia_movil/models/appointmentTestList.dart';
+import 'package:proyecto_ortiz_nosiglia_movil/models/appointmentDetail.dart';
 import 'package:proyecto_ortiz_nosiglia_movil/providers/citas.dart';
 
 class AppointmentTabCanceled extends StatefulWidget {
@@ -12,12 +11,24 @@ class AppointmentTabCanceled extends StatefulWidget {
 }
 
 class _AppointmentTabCanceledState extends State<AppointmentTabCanceled> {
+  late Future<List<AppointmentDetail>> _futureCanceledAppointments;
+
+  @override
+  void initState() {
+    super.initState();
+    _futureCanceledAppointments = getCanceledAppointments();
+  }
+  void _actualizarDatos() {
+    setState(() {
+      _futureCanceledAppointments = getCanceledAppointments();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        body: FutureBuilder<List<Appointment>>(
-          future: getCanceledAppointments(),
+        body: FutureBuilder<List<AppointmentDetail>>(
+          future: _futureCanceledAppointments,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -37,16 +48,8 @@ class _AppointmentTabCanceledState extends State<AppointmentTabCanceled> {
                     children: [
                       const SizedBox(height: 10),
                       appointmentCard(
-                        id: appointment.id,
-                        confirmation: appointment.status,
-                        mainText: "Paciente Juan Perez Mendoza",
-                        subText: appointment.specialty,
-                        date:
-                        "${appointment.start.day}/${appointment.start.month}/${appointment.start.year}",
-                        time:
-                        "${appointment.start.hour}:${appointment.start.minute}",
-                        image: "lib/icons/male-doctor.png",
-                        status: appointment.status,
+                        appointment: appointment,
+                        onRegistroCreado: _actualizarDatos,
                       ),
                     ],
                   );

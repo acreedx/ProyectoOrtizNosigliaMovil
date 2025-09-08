@@ -1,79 +1,59 @@
-import 'package:proyecto_ortiz_nosiglia_movil/models/allergy.dart';
-
 class Person {
-  String id;
-  String firstName;
-  String? secondName;
-  String familyName;
-  String gender;
-  DateTime birthDate;
-  String? phone;
-  String? mobile;
-  String email;
-  String addressLine;
-  String addressCity;
-  String maritalStatus;
+  int id;
   String identification;
-  String photoUrl;
-  List<Allergy> allergies;
+  String first_name;
+  String last_name;
+  DateTime birth_date;
+  String phone;
+  String mobile;
+  String email;
+  String address_line;
+  String address_city;
+  String photo_url;
 
   Person({
     required this.id,
-    required this.firstName,
-    this.secondName,
-    required this.familyName,
-    required this.gender,
-    required this.birthDate,
-    this.phone,
-    this.mobile,
-    required this.email,
-    required this.addressLine,
-    required this.addressCity,
-    required this.maritalStatus,
     required this.identification,
-    required this.photoUrl,
-    required this.allergies,
+    required this.first_name,
+    required this.last_name,
+    required this.birth_date,
+    required this.phone,
+    required this.mobile,
+    required this.email,
+    required this.address_line,
+    required this.address_city,
+    required this.photo_url,
   });
 
   factory Person.fromJson(Map<String, dynamic> json) {
     return Person(
-      id: json['id'] as String,
-      firstName: json['firstName'] as String,
-      secondName: json['secondName'] as String?,
-      familyName: json['familyName'] as String,
-      gender: json['gender'] as String,
-      birthDate: DateTime.parse(json['birthDate'] as String),
-      phone: json['phone'] as String?,
-      mobile: json['mobile'] as String?,
-      email: json['email'] as String,
-      addressLine: json['addressLine'] as String,
-      addressCity: json['addressCity'] as String,
-      maritalStatus: json['maritalStatus'] as String,
+      id: int.parse(json['id'].toString()),
       identification: json['identification'] as String,
-      photoUrl: json['photoUrl'] as String,
-      allergies: (json['allergies'] as List)
-          .map((allergy) => Allergy.fromJson(allergy))
-          .toList(),
+      first_name: json['first_name'] as String,
+      last_name: json['last_name'] as String,
+      birth_date: DateTime.parse(json['birth_date'] as String),
+      phone: json['phone'] as String,
+      mobile: json['mobile'] as String,
+      email: json['email'] as String,
+      address_line: json['address_line'] as String,
+      address_city: json['address_city'] as String,
+      photo_url: json['photo_url'] as String,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'firstName': firstName,
-      'secondName': secondName,
-      'familyName': familyName,
-      'gender': gender,
-      'birthDate': birthDate.toIso8601String(),
+      'identification': identification,
+      'first_name': first_name,
+      'last_name': last_name,
+      'birth_date': birth_date.toIso8601String(),
       'phone': phone,
       'mobile': mobile,
       'email': email,
-      'addressLine': addressLine,
-      'addressCity': addressCity,
-      'maritalStatus': maritalStatus,
-      'identification': identification,
-      'photoUrl': photoUrl,
-      'allergies': allergies.map((allergy) => allergy.toJson()).toList(),
+      'address_line': address_line,
+      'address_city': address_city,
+      'photo_url': photo_url,
     };
   }
 }

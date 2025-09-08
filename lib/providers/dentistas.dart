@@ -19,7 +19,6 @@ Future<List<Dentist>> getDentists() async {
     List<Dentist> dentists = (res['dentistas'] as List)
         .map((dentistJson) => Dentist.fromJson(dentistJson))
         .toList();
-    print(res['dentistas']);
     return dentists;
   } else {
     var error = res['error'] ?? 'Error desconocido';

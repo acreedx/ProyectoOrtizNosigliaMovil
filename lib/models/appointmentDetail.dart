@@ -1,4 +1,6 @@
-class Appointment {
+import 'package:proyecto_ortiz_nosiglia_movil/models/patient.dart';
+
+class AppointmentDetail {
   int id;
   DateTime programed_date_time;
   DateTime programed_end_date_time;
@@ -11,7 +13,9 @@ class Appointment {
   String status;
   int patient_id;
   int doctor_id;
-  Appointment({
+  Patient patient;
+
+  AppointmentDetail({
     required this.id,
     required this.programed_date_time,
     required this.programed_end_date_time,
@@ -24,13 +28,15 @@ class Appointment {
     required this.status,
     required this.patient_id,
     required this.doctor_id,
+    required this.patient,
   });
 
-  factory Appointment.fromJson(Map<String, dynamic> json) {
-    return Appointment(
+  factory AppointmentDetail.fromJson(Map<String, dynamic> json) {
+    Patient patientData = Patient.fromJson(json['patient']);
+    return AppointmentDetail(
       id: int.parse(json['id'].toString())  ,
-      programed_date_time: DateTime.parse(json['start'] as String),
-      programed_end_date_time: DateTime.parse(json['end'] as String),
+      programed_date_time: DateTime.parse(json['programed_date_time'] as String),
+      programed_end_date_time: DateTime.parse(json['programed_end_date_time'] as String),
       specialty: json['specialty'] as String,
       reason: json['reason'] as String,
       note: json['note'] as String?,
@@ -39,9 +45,10 @@ class Appointment {
       cancellation_date: json['cancellation_date'] != null
           ? DateTime.parse(json['cancellation_date'] as String)
           : null,
-      status: json['status'] as String,
+      status: json['status'] as String ,
       patient_id: int.parse(json['patient_id'].toString()),
       doctor_id: int.parse(json['doctor_id'].toString()),
+      patient: patientData,
     );
   }
 
